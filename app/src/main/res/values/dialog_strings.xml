@@ -1,0 +1,18 @@
+<resources>
+    <string name="launch_dialog_title">@string/ThemeName</string>
+    <string name="launch_dialog_content">Launch dialog content.</string>
+    <string name="launch_dialog_positive">OK</string>
+
+    <!--
+        Show a negative button?
+        Leave it empty if you don't need it.
+    -->
+    <string name="launch_dialog_negative">Close</string>
+    <!--
+        Add an URL below to open if the negative button is clicked.
+        Leave it empty to close the launch dialog.
+    -->
+    <string name="launch_dialog_negative_url" />
+
+    <string name="icon">Icon</string>
+</resources>

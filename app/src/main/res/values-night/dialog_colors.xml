@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="accent">@android:color/holo_blue_light</color>
+    <color name="accentVariant">@android:color/holo_green_light</color>
+    <color name="background">@android:color/background_dark</color>
+    <color name="surface">#101010</color>
+</resources>

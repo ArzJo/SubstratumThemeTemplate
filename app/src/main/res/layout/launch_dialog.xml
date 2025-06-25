@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_gravity="center_horizontal"
+        android:src="@mipmap/ic_launcher"
+        android:scaleType="centerCrop"
+        android:contentDescription="@string/icon" />
+
+    <TextView
+        android:id="@+id/dialog_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_gravity="center"
+        android:text="@string/launch_dialog_title"
+        android:textSize="22sp"
+        android:textColor="?colorPrimary"/>
+
+    <TextView
+        android:id="@+id/dialog_body"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingVertical="16dp"
+        android:paddingHorizontal="8dp"
+        android:text="@string/launch_dialog_content"
+        android:textAlignment="center"
+        android:textSize="16sp"
+        android:textColor="?android:textColorPrimary"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="4dp">
+        <!-- Change the negative button visibility if need it -->
+        <Button
+            android:id="@+id/btn_cancel"
+            android:layout_gravity="center_vertical"
+            android:text="@string/launch_dialog_negative"
+            android:visibility="gone"
+            style="@style/Button.Negative" />
+
+        <Button
+            android:id="@+id/btn_continue"
+            android:layout_gravity="center_vertical"
+            android:text="@string/launch_dialog_positive"
+            style="@style/Button.Positive" />
+
+    </LinearLayout>
+</LinearLayout>
