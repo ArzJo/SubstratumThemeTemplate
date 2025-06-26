@@ -63,6 +63,8 @@ android {
 
     buildTypes {
         debug {
+            versionNameSuffix = "-debug"
+
             // DO NOT MODIFY!
             buildConfigField("boolean", "ENFORCE_GOOGLE_PLAY_INSTALL", "false")
             buildConfigField("String", "BASE_64_LICENSE_KEY", "\"\"")
