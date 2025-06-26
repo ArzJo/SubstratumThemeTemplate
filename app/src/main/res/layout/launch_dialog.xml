@@ -38,6 +38,29 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:layout_marginBottom="16dp">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/rate"
+            android:drawableTop="@drawable/star_24px"
+            android:text="@string/rate"
+            style="@style/IconButton" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/email"
+            android:drawableTop="@drawable/mail_24px"
+            android:text="@string/email"
+            style="@style/IconButton" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/website"
+            android:drawableTop="@drawable/link_24px"
+            android:text="@string/website"
+            style="@style/IconButton" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:layout_marginBottom="4dp">
         <!-- Change the negative button visibility if need it -->
         <Button

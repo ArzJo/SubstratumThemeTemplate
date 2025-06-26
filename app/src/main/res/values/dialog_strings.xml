@@ -14,5 +14,20 @@
     -->
     <string name="launch_dialog_negative_url" />
 
+    <!--
+        Icon button labels below;
+        rename (refactor) them according to your needs.
+    -->
+    <string name="rate">Rate</string>
+    <string name="email">Email</string>
+    <string name="website">Website</string>
+
+    <!-- Don't forget to add the corresponding URLs below. -->
+    <string name="rate_url" />
+    <string name="email_url" />
+    <string name="website_url" />
+
+
     <string name="icon">Icon</string>
+    <string name="missing_url_toast">Missing URL!</string>
 </resources>

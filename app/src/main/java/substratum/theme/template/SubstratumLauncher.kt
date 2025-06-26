@@ -25,6 +25,7 @@ import com.github.javiersantos.piracychecker.utils.apkSignatures
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import androidx.core.content.edit
 import androidx.core.net.toUri
+import com.google.android.material.button.MaterialButton
 
 class SubstratumLauncher : Activity() {
 
@@ -187,6 +188,22 @@ class SubstratumLauncher : Activity() {
         val view = layoutInflater.inflate(R.layout.launch_dialog, null)
         dialog.setView(view)
 
+        // Set up the buttons
+        val rateButton = view.findViewById<MaterialButton>(R.id.rate)
+        rateButton.setOnClickListener {
+            urlButtonOnClick(R.string.rate_url)
+        }
+
+        val emailButton = view.findViewById<MaterialButton>(R.id.email)
+        emailButton.setOnClickListener {
+            urlButtonOnClick(R.string.email_url)
+        }
+
+        val websiteButton = view.findViewById<MaterialButton>(R.id.website)
+        websiteButton.setOnClickListener {
+            urlButtonOnClick(R.string.website_url)
+        }
+
         val negativeButton = view.findViewById<Button>(R.id.btn_cancel)
         val negativeText = getString(R.string.launch_dialog_negative)
 
@@ -209,5 +226,15 @@ class SubstratumLauncher : Activity() {
         }
 
         dialog.show()
+    }
+
+    private fun urlButtonOnClick(urlId: Int) {
+        val url = getString(urlId)
+        if (url.isNotEmpty()) {
+            val intent = Intent(Intent.ACTION_VIEW, url.toUri())
+            startActivity(intent)
+        } else {
+            Toast.makeText(this, R.string.missing_url_toast, Toast.LENGTH_SHORT).show()
+        }
     }
 }

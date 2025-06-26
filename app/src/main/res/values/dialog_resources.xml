@@ -32,6 +32,20 @@
         <item name="android:textColor">@color/accent</item>
     </style>
 
+    <style name="IconButton" parent="Button">
+        <item name="android:background">@drawable/btn_image</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">0.5</item>
+        <item name="android:layout_marginHorizontal">0dp</item>
+        <item name="android:padding">4dp</item>
+        <item name="android:textColor">@color/accent</item>
+        <item name="android:drawableTint">@color/accent</item>
+        <item name="android:textSize">11sp</item>
+        <item name="android:fontFamily">sans-serif-smallcaps</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <dimen name="corner_radius">24dp</dimen>
     <dimen name="button_corner_radius">24dp</dimen>
     <dimen name="button_inset_vertical">0dp</dimen>
