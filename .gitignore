@@ -10,5 +10,6 @@
 .cxx
 /app/src/androidTest
 /app/src/test
-/buildSrc/build
+/buildSrc/.gradle
 /buildSrc/.kotlin
+/buildSrc/build
