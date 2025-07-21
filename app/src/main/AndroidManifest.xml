@@ -18,7 +18,7 @@
         android:theme="@style/Theme.LaunchDialog"
         tools:node="replace">
 
-        <activity android:name="substratum.theme.template.SubstratumLauncher"
+        <activity android:name=".SubstratumLauncher"
             android:exported="true">
             <intent-filter>
                 <action android:name="projekt.substratum.THEME"/>
