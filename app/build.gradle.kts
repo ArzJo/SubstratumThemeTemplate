@@ -55,9 +55,9 @@ android {
         // DO NOT MODIFY!
         buildConfigField("boolean", "SUPPORTS_THIRD_PARTY_SYSTEMS", "" + SUPPORTS_THIRD_PARTY_SYSTEMS)
         buildConfigField("boolean", "ALLOW_THIRD_PARTY_SUBSTRATUM_BUILDS", "" + ALLOW_THIRD_PARTY_SUBSTRATUM_BUILDS)
+        buildConfigField("String", "IV_KEY", "\"" + ivKey + "\"")
         buildConfigField("byte[]", "DECRYPTION_KEY", secretKey.joinToString(prefix = "{", postfix = "}"))
         buildConfigField("byte[]", "IV_KEY", ivKey.joinToString(prefix = "{", postfix = "}"))
-        buildConfigField("String", "IV_KEY", "\"" + ivKey + "\"")
         resValue("string", "encryption_status", if (shouldEncrypt()) "onCompileVerify" else "false")
     }
 
