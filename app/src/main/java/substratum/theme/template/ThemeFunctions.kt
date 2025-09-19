@@ -1,10 +1,11 @@
 package substratum.theme.template
 
-import android.annotation.SuppressLint
 import android.content.Context
+import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.content.pm.Signature
 import android.os.RemoteException
+import android.util.Log
 import substratum.theme.template.AdvancedConstants.ORGANIZATION_THEME_SYSTEMS
 import substratum.theme.template.AdvancedConstants.OTHER_THEME_SYSTEMS
 
@@ -17,35 +18,48 @@ object ThemeFunctions {
         return ORGANIZATION_THEME_SYSTEMS.contains(packageId)
     }
 
-    @Suppress("DEPRECATION")
-    @SuppressLint("PackageManagerGetSignatures")
     fun checkApprovedSignature(context: Context, packageName: String): Boolean {
-        SIGNATURES.filter {
-            try {
-                val pm = context.packageManager
-                val pi = pm.getPackageInfo(packageName, PackageManager.GET_SIGNATURES)
-                if (pi.signatures != null && pi.signatures!!.size == 1
-                    && ((SIGNATURES[0] == pi.signatures!![0]) ||
-                            (SIGNATURES[1] == pi.signatures!![0]))) {
-                    return true
-                }
-                return false
-            } catch (e: RemoteException) {
+        try {
+            val packageManager = context.packageManager
+            val flags = PackageManager.GET_SIGNING_CERTIFICATES
+            val packageInfo: PackageInfo = packageManager.getPackageInfo(packageName, flags)
+
+            val actualSignatures: Array<Signature>? =
+                packageInfo.signingInfo?.apkContentsSigners
+
+            if (actualSignatures == null || actualSignatures.isEmpty()) {
+                Log.w("SignatureCheck", "No signatures found for package: $packageName")
                 return false
             }
-        }.forEach { _ -> return true }
-        return false
+
+            for (actualSignature in actualSignatures) {
+                if (SIGNATURES.contains(actualSignature)) {
+                    return true
+                }
+            }
+
+            Log.w("SignatureCheck", "Signature mismatch for package: $packageName")
+            return false
+
+        } catch (e: PackageManager.NameNotFoundException) {
+            Log.w("SignatureCheck", "Package not found: $packageName", e)
+            return false
+        } catch (e: RemoteException) {
+            Log.e("SignatureCheck", "RemoteException while checking signature for $packageName", e)
+            return false
+        } catch (e: Exception) {
+            Log.e("SignatureCheck", "Unexpected error checking signature for $packageName", e)
+            return false
+        }
     }
 
-    @Suppress("DEPRECATION")
-    @SuppressLint("PackageManagerGetSignatures")
     fun getSelfSignature(context: Context): Int {
         try {
             val sigs = context.packageManager.getPackageInfo(
                 context.packageName,
-                PackageManager.GET_SIGNATURES
-            ).signatures
-            return sigs?.get(0).hashCode()
+                PackageManager.GET_SIGNING_CERTIFICATES
+            ).signingInfo.toString()
+            return sigs[0].hashCode()
         } catch (e: PackageManager.NameNotFoundException) {
             e.printStackTrace()
         }

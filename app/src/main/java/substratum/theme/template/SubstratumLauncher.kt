@@ -35,10 +35,6 @@ class SubstratumLauncher : Activity() {
     private val getKeysIntent = "projekt.substratum.GET_KEYS"
     private val receiveKeysIntent = "projekt.substratum.RECEIVE_KEYS"
 
-    private val themePiracyCheck by lazy {
-        false
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -106,73 +102,68 @@ class SubstratumLauncher : Activity() {
             Log.e(tag, apkSignatures.toString())
         }
 
-        if (!themePiracyCheck) {
-            piracyChecker {
-                if (BuildConfig.ENFORCE_GOOGLE_PLAY_INSTALL) {
-                    enableInstallerId(InstallerID.GOOGLE_PLAY)
-                }
-                if (BuildConfig.BASE_64_LICENSE_KEY.isNotEmpty()) {
-                    enableGooglePlayLicensing(BuildConfig.BASE_64_LICENSE_KEY)
-                }
-                if (BuildConfig.APK_SIGNATURE_PRODUCTION.isNotEmpty()) {
-                    enableSigningCertificates(BuildConfig.APK_SIGNATURE_PRODUCTION)
-                }
-                callback {
-                    allow {
-                        val returnIntent = if (intent.action == getKeysIntent) {
-                            Intent(receiveKeysIntent)
-                        } else {
-                            Intent()
-                        }
-
-                        val themeName = getString(R.string.ThemeName)
-                        val themeAuthor = getString(R.string.ThemeAuthor)
-                        val themePid = packageName
-                        returnIntent.putExtra("theme_name", themeName)
-                        returnIntent.putExtra("theme_author", themeAuthor)
-                        returnIntent.putExtra("theme_pid", themePid)
-                        returnIntent.putExtra("theme_debug", BuildConfig.DEBUG)
-                        returnIntent.putExtra("theme_piracy_check", themePiracyCheck)
-                        returnIntent.putExtra("encryption_key", BuildConfig.DECRYPTION_KEY)
-                        returnIntent.putExtra("iv_encrypt_key", BuildConfig.IV_KEY)
-
-                        val callingPackage = intent.getStringExtra("calling_package_name")
-                        if (!callingPackage?.let { isCallingPackageAllowed(it) }!!) {
-                            finish()
-                        } else {
-                            returnIntent.`package` = callingPackage
-                        }
-
-                        if (intent.action == substratumIntentData) {
-                            setResult(getSelfSignature(applicationContext), returnIntent)
-                        } else if (intent.action == getKeysIntent) {
-                            returnIntent.action = receiveKeysIntent
-                            sendBroadcast(returnIntent)
-                        }
-                        destroy()
-                        finish()
+        piracyChecker {
+            if (BuildConfig.ENFORCE_GOOGLE_PLAY_INSTALL) {
+                enableInstallerId(InstallerID.GOOGLE_PLAY)
+            }
+            if (BuildConfig.BASE_64_LICENSE_KEY.isNotEmpty()) {
+                enableGooglePlayLicensing(BuildConfig.BASE_64_LICENSE_KEY)
+            }
+            if (BuildConfig.APK_SIGNATURE_PRODUCTION.isNotEmpty()) {
+                enableSigningCertificates(BuildConfig.APK_SIGNATURE_PRODUCTION)
+            }
+            callback {
+                allow {
+                    val returnIntent = if (intent.action == getKeysIntent) {
+                        Intent(receiveKeysIntent)
+                    } else {
+                        Intent()
                     }
-                    doNotAllow { _, _ ->
-                        val parse = String.format(
-                            getString(R.string.toast_unlicensed),
-                            getString(R.string.ThemeName))
-                        Toast.makeText(this@SubstratumLauncher, parse, Toast.LENGTH_SHORT).show()
-                        destroy()
+
+                    val themeName = getString(R.string.ThemeName)
+                    val themeAuthor = getString(R.string.ThemeAuthor)
+                    val themePid = packageName
+                    returnIntent.putExtra("theme_name", themeName)
+                    returnIntent.putExtra("theme_author", themeAuthor)
+                    returnIntent.putExtra("theme_pid", themePid)
+                    returnIntent.putExtra("theme_debug", BuildConfig.DEBUG)
+                    returnIntent.putExtra("theme_piracy_check", false)
+                    returnIntent.putExtra("encryption_key", BuildConfig.DECRYPTION_KEY)
+                    returnIntent.putExtra("iv_encrypt_key", BuildConfig.IV_KEY)
+
+                    val callingPackage = intent.getStringExtra("calling_package_name")
+                    if (!callingPackage?.let { isCallingPackageAllowed(it) }!!) {
                         finish()
+                    } else {
+                        returnIntent.`package` = callingPackage
                     }
-                    onError { error ->
-                        Toast.makeText(this@SubstratumLauncher, error.toString(), Toast.LENGTH_LONG).show()
-                        destroy()
-                        finish()
+
+                    if (intent.action == substratumIntentData) {
+                        setResult(getSelfSignature(applicationContext), returnIntent)
+                    } else if (intent.action == getKeysIntent) {
+                        returnIntent.action = receiveKeysIntent
+                        sendBroadcast(returnIntent)
                     }
+                    destroy()
+                    finish()
                 }
-                // Save result to shared preferences, remove this line if you don't want to save the result locally
-                saveResultToSharedPreferences("piracy_checker", "piracy_checker_result")
-            }.start()
-        } else {
-            Toast.makeText(this, R.string.unauthorized, Toast.LENGTH_LONG).show()
-            finish()
-        }
+                doNotAllow { _, _ ->
+                    val parse = String.format(
+                        getString(R.string.toast_unlicensed),
+                        getString(R.string.ThemeName))
+                    Toast.makeText(this@SubstratumLauncher, parse, Toast.LENGTH_SHORT).show()
+                    destroy()
+                    finish()
+                }
+                onError { error ->
+                    Toast.makeText(this@SubstratumLauncher, error.toString(), Toast.LENGTH_LONG).show()
+                    destroy()
+                    finish()
+                }
+            }
+            // Save result to shared preferences, remove this line if you don't want to save the result locally
+            saveResultToSharedPreferences("piracy_checker", "piracy_checker_result")
+        }.start()
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
