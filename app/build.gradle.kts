@@ -32,11 +32,11 @@ val secretKey = generateRandomByteArray()
 val ivKey = generateRandomByteArray()
 
 // App configurations
-val sdkVersion = 35
+val sdkVersion = 36
 val packageName = "substratum.theme.template"
 val appVersionCode = 1
 val appVersionName = "1.0"
-val appName = "Theme Template" // apk/bundle file name
+val appName = rootProject.name // apk/bundle file name
 
 android {
     namespace = packageName
@@ -48,7 +48,7 @@ android {
         targetSdk = sdkVersion
         versionCode = appVersionCode
         versionName = appVersionName
-        setProperty("archivesBaseName", "$appName-$versionName")
+        setProperty("archivesBaseName", "$appName-$versionName[$versionCode]")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
